@@ -69,3 +69,65 @@ a.active hr {
 .animate-fade-in-delay {
   animation: fadeIn 1s ease-out forwards;
 }
+
+/* Login css */
+.input {
+  width: 100%;
+  padding: 0.65rem 0.95rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+.input:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out;
+}
+.animate-slide {
+  animation: slide 0.35s ease-out;
+  }
+
+/* Contact css */
+@keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
