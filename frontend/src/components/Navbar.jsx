@@ -7,16 +7,21 @@ const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const { setShowsearch, getCartCount } = useContext(ShopContext);
 
+  const handleSearchClick = () => {
+  setShowsearch(true);
+};
+
+<button onClick={handleSearchClick}>Search</button>
+
+
   return (
     <div className="flex items-center justify-between py-5 px-4 sm:px-10
                     sticky top-0 z-50 bg-white border-b">
 
-      {/* LOGO */}
       <Link to="/">
         <img src={assets.logo} className="w-40" alt="logo" />
       </Link>
 
-      {/* DESKTOP LINKS */}
       <ul className="hidden sm:flex gap-6 text-sm text-gray-700">
         {["/", "/collection", "/about", "/contact"].map((path, index) => {
           const labels = ["HOME", "COLLECTION", "ABOUT", "CONTACT"];
@@ -33,17 +38,15 @@ const Navbar = () => {
         })}
       </ul>
 
-      {/* RIGHT ICONS */}
       <div className="flex items-center gap-6">
-        {/* SEARCH */}
-        <img
-          onClick={() => setShowsearch(true)}
+        <Link to='/collection'>
+        <img 
+          onClick={handleSearchClick}
           src={assets.search_icon}
           className="w-5 cursor-pointer"
           alt="search"
-        />
+        /></Link>
 
-        {/* PROFILE */}
         <div className="group relative">
           <Link to={'/login'}><img
             className="w-5 cursor-pointer"
@@ -60,7 +63,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* CART */}
         <Link to="/cart" className="relative">
           <img src={assets.cart_icon} className="w-5" alt="cart" />
           <p className="absolute -right-2 -bottom-2 w-5 h-5 rounded-full
@@ -70,7 +72,6 @@ const Navbar = () => {
           </p>
         </Link>
 
-        {/* HAMBURGER */}
         <img
           onClick={() => setVisible(true)}
           src={assets.menu_icon}
@@ -79,7 +80,6 @@ const Navbar = () => {
         />
       </div>
 
-      {/* MOBILE OVERLAY */}
       {visible && (
         <div
           onClick={() => setVisible(false)}
@@ -87,7 +87,6 @@ const Navbar = () => {
         />
       )}
 
-      {/* MOBILE DRAWER */}
       <div
         className={`fixed top-0 right-0 h-full w-[100%] max-w-sm bg-white z-50
           transform transition-transform duration-300 ease-in-out sm:hidden
@@ -95,7 +94,6 @@ const Navbar = () => {
       >
         <div className="flex flex-col text-gray-700">
 
-          {/* BACK */}
           <div
             onClick={() => setVisible(false)}
             className="flex items-center gap-3 p-4 border-b cursor-pointer"
@@ -107,8 +105,6 @@ const Navbar = () => {
             />
             <p className="text-lg font-medium">Back</p>
           </div>
-
-          {/* LINKS */}
           {["/", "/collection", "/about", "/contact"].map((path, index) => {
             const labels = ["HOME", "COLLECTION", "ABOUT", "CONTACT"];
             return (

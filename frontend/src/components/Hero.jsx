@@ -38,7 +38,7 @@ const Hero = () => {
 
         </div >
         {/* Hero Right Side */}
-        <div className="relative sm:w-1/2 h-[500px] overflow-hidden">
+        <div className="relative w-0 sm:w-1/2 h-[100px] sm:h-[500px] overflow-hidden">
 
              <video
         src={aurexmodel}

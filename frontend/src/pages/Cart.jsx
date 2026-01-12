@@ -36,20 +36,44 @@ const Cart = () => {
 
   return (
     <div className="pt-16 px-4 sm:px-10 max-w-7xl mx-auto">
-      
-      {/* Page Title */}
-      <div className="mb-10">
-        <Title text1="YOUR" text2="CART" />
-      </div>
+
+  
 
       {cartData.length === 0 ? (
-        <p className="text-center text-gray-500 py-20">
-          Your cart is currently empty.
-        </p>
+        <>
+      <div className="flex flex-col items-center justify-center py-10 text-center space-y-6">
+
+  <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gray-100">
+    <img
+      src={assets.cart_icon}
+      alt="Empty Cart"
+      className="w-8 h-8 opacity-70"
+    />
+  </div>
+
+  <h1 className="text-2xl font-semibold text-gray-900">
+    Your cart is empty
+  </h1>
+
+  <p className="max-w-md text-sm text-gray-500">
+    Looks like you haven’t added anything yet.  
+    Start shopping to discover the latest trends and great deals.
+  </p>
+
+  <button
+    onClick={() => navigate("/collection")}
+    className="mt-4 rounded-full bg-black px-8 py-3 text-sm font-medium text-white
+               hover:bg-gray-900 transition"
+  >
+    Start Shopping
+  </button>
+
+</div>
+
+        </>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
-          
-          {/* Cart Items */}
+
           <div className="space-y-6">
             {cartData.map((item, index) => {
               const product = products.find(
@@ -65,7 +89,7 @@ const Cart = () => {
                              bg-white border rounded-xl p-5
                              shadow-sm hover:shadow-md transition"
                 >
-                  {/* Product Image */}
+
                   <Link to={`/product/${item._id}`}>
                     <img
                       src={product.image[0]}
@@ -75,7 +99,6 @@ const Cart = () => {
                     />
                   </Link>
 
-                  {/* Product Info */}
                   <div className="flex-1">
                     <p className="text-lg font-medium text-gray-900">
                       {product.name}
@@ -93,7 +116,6 @@ const Cart = () => {
                     </div>
                   </div>
 
-                  {/* Quantity & Remove */}
                   <div className="flex items-center gap-4 justify-center">
                     <input
                       type="number"
@@ -130,7 +152,6 @@ const Cart = () => {
             })}
           </div>
 
-          {/* Order Summary */}
           <div className="bg-white border rounded-xl p-6 h-fit shadow-sm">
             <h3 className="text-lg font-medium mb-6">
               Order Summary

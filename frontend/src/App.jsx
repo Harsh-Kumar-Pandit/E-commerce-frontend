@@ -13,13 +13,16 @@ import PlaceOrder from './pages/PlaceOrder'
 import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify';
+import OurPolicy from './components/OurPolicy'
+import ScrollToTop from "./components/ScrollToTop";
+
 
 const App = () => {
   return (
-    <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px[9vw]'>
+    <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] '>
       <ToastContainer/>
+            <ScrollToTop />
       <Navbar/>
-      {/* will seen in every page because in app */}
      <SearchBar/>
       <Routes>
         {/* enemels the / route to target Home */}
@@ -31,6 +34,7 @@ const App = () => {
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path="/register" element={<Login />} />
         <Route path='/orders' element={<Orders/>}/>
         <Route path='/place-order' element={<PlaceOrder/>}/>
       </Routes>

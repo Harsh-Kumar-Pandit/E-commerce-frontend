@@ -6,17 +6,16 @@ import NewsLetterBox from "../components/NewsLetterBox";
 const About = () => {
   return (
     <div className="mt-20 px-4 sm:px-10 max-w-6xl mx-auto">
-      
-      {/* ABOUT TITLE */}
+
       <div className="mb-14 text-center">
         <Title text1="ABOUT" text2="US" />
       </div>
+      
 
-      {/* ABOUT CONTENT */}
       <div className="flex flex-col sm:flex-row items-center gap-14">
         
-        {/* IMAGE */}
-        <div className="w-full sm:w-1/2">
+ 
+        <div className="w-full sm:w-1/2 hover:scale-[1.01] transition-transform duration-[1200ms]">
           <img
             src={assets.about_img}
             alt="About us"
@@ -24,7 +23,6 @@ const About = () => {
           />
         </div>
 
-        {/* TEXT */}
         <div className="flex flex-col gap-6 sm:w-1/2 text-gray-700 leading-relaxed">
           <p>
             We are a modern fashion and lifestyle brand focused on creating
@@ -49,14 +47,12 @@ const About = () => {
         </div>
       </div>
 
-      {/* WHY CHOOSE US */}
       <div className="text-4xl py-14 text-center">
         <Title text1="WHY" text2="CHOOSE US" />
       </div>
 
       <div className="flex flex-col md:flex-row text-sm mb-20">
-        
-        {/* CARD 1 */}
+
         <div className="border border-gray-200 hover:border-black px-10 md:px-16 py-10 sm:py-20 flex flex-col gap-4">
           <b className="text-base">Quality Assurance</b>
           <p className="text-gray-600 leading-relaxed">
@@ -65,7 +61,6 @@ const About = () => {
           </p>
         </div>
 
-        {/* CARD 2 */}
         <div className="border border-gray-200 hover:border-black px-10 md:px-16 py-10 sm:py-20 flex flex-col gap-4">
           <b className="text-base">Customer-First Approach</b>
           <p className="text-gray-600 leading-relaxed">
@@ -74,7 +69,6 @@ const About = () => {
           </p>
         </div>
 
-        {/* CARD 3 */}
         <div className="border border-gray-200
         hover:border-black px-10 md:px-16 py-10 sm:py-20 flex flex-col gap-4">
           <b className="text-base">Trusted Experience</b>

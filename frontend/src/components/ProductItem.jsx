@@ -8,12 +8,13 @@ const ProductItem = ({ id, image, name, price }) => {
   return (
     <Link
       to={`/product/${id}`}
+      onClick={() => window.scrollTo(0, 0)}
       className="group relative block overflow-hidden rounded-2xl
                  bg-white border border-gray-200
                  hover:border-gray-300 hover:shadow-xl
                  transition-all duration-300"
     >
-      {/* IMAGE */}
+
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
         <img
           src={image?.[0]}
@@ -23,12 +24,10 @@ const ProductItem = ({ id, image, name, price }) => {
                      group-hover:scale-105"
         />
 
-        {/* subtle overlay */}
         <div className="absolute inset-0 bg-black/0
                         group-hover:bg-black/5 transition" />
       </div>
 
-      {/* CONTENT */}
       <div className="p-4 space-y-1">
         <p
           className="text-sm font-medium text-gray-700
@@ -43,7 +42,6 @@ const ProductItem = ({ id, image, name, price }) => {
         </p>
       </div>
 
-      {/* HOVER ACTION (OPTIONAL, BUT PREMIUM) */}
       <div
         className="absolute inset-x-0 bottom-0
                    translate-y-full group-hover:translate-y-0

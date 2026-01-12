@@ -7,15 +7,12 @@ const Contact = () => {
     <div className="mt-20 px-4 sm:px-10 max-w-6xl mx-auto
                     animate-[fadeIn_0.8s_ease-out]">
 
-      {/* TITLE */}
       <div className="mb-14 text-center">
         <Title text1="CONTACT" text2="US" />
       </div>
 
-      {/* CONTENT */}
       <div className="flex flex-col lg:flex-row gap-16 items-start mb-24">
 
-        {/* LEFT IMAGE */}
         <div
           className="w-full lg:w-1/2 overflow-hidden
                      animate-[slideUp_0.9s_ease-out]"
@@ -29,10 +26,8 @@ const Contact = () => {
           />
         </div>
 
-        {/* RIGHT INFO */}
         <div className="w-full lg:w-1/2 flex flex-col gap-10 text-gray-700">
 
-          {/* STORE INFO */}
           <div
             className="animate-[fadeIn_1s_ease-out]"
             style={{ animationDelay: "0.15s", animationFillMode: "both" }}
@@ -57,7 +52,6 @@ const Contact = () => {
             </p>
           </div>
 
-          {/* CAREERS */}
           <div
             className="animate-[fadeIn_1s_ease-out]"
             style={{ animationDelay: "0.3s", animationFillMode: "both" }}
