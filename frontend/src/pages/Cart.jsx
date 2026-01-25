@@ -92,7 +92,7 @@ const Cart = () => {
 
                   <Link to={`/product/${item._id}`}>
                     <img
-                      src={product.image[0]}
+                      src={product.images[0]}
                       alt={product.name}
                       className="w-24 h-32 object-cover rounded-lg
                                  cursor-pointer hover:opacity-90 transition"

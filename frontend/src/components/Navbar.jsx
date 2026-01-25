@@ -5,19 +5,33 @@ import { ShopContext } from "../context/ShopContext";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowsearch, getCartCount } = useContext(ShopContext);
+  const {
+    setShowsearch,
+    getCartCount,
+    token,
+    setToken,
+    navigate,
+    setCartItems,
+  } = useContext(ShopContext);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
+    navigate("/login");
+  };
 
   const handleSearchClick = () => {
-  setShowsearch(true);
-};
+    setShowsearch(true);
+  };
 
-<button onClick={handleSearchClick}>Search</button>
-
+  <button onClick={handleSearchClick}>Search</button>;
 
   return (
-    <div className="flex items-center justify-between py-5 px-4 sm:px-10
-                    sticky top-0 z-50 bg-white border-b">
-
+    <div
+      className="flex items-center justify-between py-5 px-4 sm:px-10
+                    sticky top-0 z-50 bg-white border-b"
+    >
       <Link to="/">
         <img src={assets.logo} className="w-40" alt="logo" />
       </Link>
@@ -39,35 +53,45 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-6">
-        <Link to='/collection'>
-        <img 
-          onClick={handleSearchClick}
-          src={assets.search_icon}
-          className="w-5 cursor-pointer"
-          alt="search"
-        /></Link>
-
-        <div className="group relative">
-          <Link to={'/login'}><img
+        <Link to="/collection">
+          <img
+            onClick={handleSearchClick}
+            src={assets.search_icon}
             className="w-5 cursor-pointer"
-            src={assets.profile_icon}
-            alt="profile"
-          /></Link>
-          <div className="group-hover:block hidden absolute right-0 mt-2">
-            <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100
-                            text-gray-500 rounded shadow">
+            alt="search"
+          />
+        </Link>
+        <div className="relative group">
+          <Link to="/login">
+            <img
+              className="w-5 cursor-pointer"
+              src={assets.profile_icon}
+              alt="profile"
+            />
+          </Link>
+
+          {/* Dropdown */}
+          {token ?  <div className="absolute right-0 top-6 hidden group-hover:block">
+            <div
+              className="flex flex-col gap-2 w-36 py-3 px-5
+                 bg-slate-100 text-gray-500 rounded shadow"
+            >
               <p className="cursor-pointer hover:text-black">My Profile</p>
               <p className="cursor-pointer hover:text-black">Orders</p>
-              <p className="cursor-pointer hover:text-black">Logout</p>
+              <p onClick={logout} className="cursor-pointer hover:text-black">
+                Logout
+              </p>
             </div>
-          </div>
+          </div>: ''}
+         
         </div>
-
         <Link to="/cart" className="relative">
           <img src={assets.cart_icon} className="w-5" alt="cart" />
-          <p className="absolute -right-2 -bottom-2 w-5 h-5 rounded-full
+          <p
+            className="absolute -right-2 -bottom-2 w-5 h-5 rounded-full
                         bg-black text-white text-xs flex items-center
-                        justify-center">
+                        justify-center"
+          >
             {getCartCount()}
           </p>
         </Link>
@@ -93,7 +117,6 @@ const Navbar = () => {
           ${visible ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex flex-col text-gray-700">
-
           <div
             onClick={() => setVisible(false)}
             className="flex items-center gap-3 p-4 border-b cursor-pointer"

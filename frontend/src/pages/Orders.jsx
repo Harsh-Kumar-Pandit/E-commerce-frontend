@@ -1,10 +1,47 @@
 import React, { useContext } from 'react'
 import Title from '../components/Title'
 import { ShopContext } from '../context/ShopContext'
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const Orders = () => {
-  const { products, currency } = useContext(ShopContext);
+  const { backendUrl, token, products, currency } = useContext(ShopContext);
+  const [orderData, setOrderData] = useState([])
 
+  const loadOrderData = async () => {
+    try {
+      if (!token) {
+        return null
+      }
+
+      const response = await axios.post(backendUrl + '/api/order/userorders', {}, {headers:{token}})
+      console.log(response.data);
+      
+      if (response.data.success) {
+        let allOrdersItem = []
+        response.data.orders.map((order) => {
+          order.items.map((item) => {
+            item['status'] = order.status
+            item['payment'] = order.payment
+            item['paymentMethod'] = order.paymentMethod
+            item['date'] = order.date
+            allOrdersItem.push(item)
+          })
+        })
+        console.log(orderData);
+        
+        setOrderData(allOrdersItem.reverse());
+        
+      }
+    } catch (error) {
+      
+    }
+  }
+
+  useEffect(() => {
+    loadOrderData()
+  },[token])
   return (
     <div className="border-t pt-16 px-4 sm:px-10 max-w-6xl mx-auto">
 
@@ -14,7 +51,7 @@ const Orders = () => {
       </div>
 
       <div className="space-y-6">
-        {products.slice(1, 4).map((item, index) => (
+        {orderData.slice().map((item, index) => (
           <div
             key={index}
             className="bg-white border rounded-xl p-5
@@ -26,7 +63,7 @@ const Orders = () => {
               <div className="flex items-start gap-6 text-sm">
                 <img
                   className="w-16 sm:w-20 h-20 object-cover rounded-lg"
-                  src={item.image[0]}
+                  src={item.images}
                   alt={item.name}
                 />
 
@@ -39,14 +76,22 @@ const Orders = () => {
                     <p className="font-medium text-gray-900">
                       {currency}{item.price}
                     </p>
-                    <p>Qty: 1</p>
-                    <p>Size: M</p>
+                    <p>Qty: {item.quantity}</p>
+                    <p>Size: {item.size}</p>
                   </div>
 
                   <p className="mt-2 text-sm">
                     Date:{" "}
                     <span className="text-gray-400">
-                      25 Jul, 2025
+                      {new Date(item.date).toDateString()}
+
+                    </span>
+                  </p>
+                  <p className="mt-2 text-sm">
+                    Payment:{" "}
+                    <span className="text-gray-400">
+                      {item.paymentMethod}
+
                     </span>
                   </p>
                 </div>
@@ -57,11 +102,11 @@ const Orders = () => {
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-green-500"></span>
                   <p className="text-sm font-medium text-gray-700">
-                    Ready to Ship
+                    {item.status}
                   </p>
                 </div>
 
-                <button
+                <button onClick={loadOrderData}
                   className="border px-4 py-2 text-sm font-medium
                              rounded-md hover:bg-black hover:text-white
                              transition"

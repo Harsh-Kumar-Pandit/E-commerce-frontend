@@ -1,4 +1,4 @@
-import React, { use, useContext, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { data, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
@@ -37,15 +37,16 @@ const Login = () => {
       } else {
         const response = await axios.post(
           backendUrl + "/api/user/login",
-          { email, password },
-          { withCredentials: true }
+          { email, password }
         );
 
         if (response.data.success) {
+          setToken(response.data.success)
+          localStorage.setItem('token', response.data.token)
           toast.success("Login successful");
           navigate("/");
         } else {
-          toast.success("Login Error")
+          toast.error("Login Error")
         }
       }
     } catch (error) {
@@ -55,8 +56,14 @@ const Login = () => {
       toast.error(error.response?.data?.message || errorMsg);
     } finally {
       setLoading(false);
-    }
+    } 
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate('/')
+    }
+  },[token])
 
   return (
     <form
