@@ -48,7 +48,7 @@ const Contact = () => {
 
             <p>
               <span className="font-medium text-gray-900">Email:</span>{" "}
-              admin@forever.com
+              admin@aurex.com
             </p>
           </div>
 

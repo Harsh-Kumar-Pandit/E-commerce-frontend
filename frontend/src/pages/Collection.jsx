@@ -41,10 +41,19 @@ const Collection = () => {
     let temp = [...products];
 
     if (showSearch && search) {
-      temp = temp.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
+  const query = search.toLowerCase().trim();
+
+  if (["men", "women", "kids"].includes(query)) {
+    temp = temp.filter(
+      (p) => p.category.toLowerCase() === query
+    );
+  } else {
+    temp = temp.filter((p) =>
+      p.name.toLowerCase().includes(query)
+    );
+  }
+}
+
 
     if (category.length)
       temp = temp.filter((p) => category.includes(p.category));

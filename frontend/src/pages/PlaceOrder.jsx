@@ -17,6 +17,8 @@ const PlaceOrder = () => {
   } = useContext(ShopContext);
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [loading, setLoading] = useState(false); // ✅ added
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -34,7 +36,7 @@ const PlaceOrder = () => {
     setFormData((data) => ({ ...data, [name]: value }));
   };
 
-  // 🔹 Calculate subtotal
+
   const subtotal = Object.keys(cartItems).reduce((sum, productId) => {
     const product = products.find((p) => p._id === productId);
     if (!product) return sum;
@@ -49,9 +51,11 @@ const PlaceOrder = () => {
   const deliveryFee = subtotal > 0 ? 10 : 0;
   const total = subtotal + deliveryFee;
 
-  // 🔹 Submit Order
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (loading) return; 
+    setLoading(true);
 
     try {
       let orderItems = [];
@@ -66,10 +70,10 @@ const PlaceOrder = () => {
             orderItems.push({
               productId: product._id,
               name: product.name,
-             images:
-    Array.isArray(product.images) && product.images.length > 0
-      ? product.images[0]
-      : "",
+              images:
+                Array.isArray(product.images) && product.images.length > 0
+                  ? product.images[0]
+                  : "",
               size,
               quantity,
               price: product.price,
@@ -80,6 +84,7 @@ const PlaceOrder = () => {
 
       if (orderItems.length === 0) {
         toast.error("Cart is empty");
+        setLoading(false);
         return;
       }
 
@@ -90,6 +95,7 @@ const PlaceOrder = () => {
         paymentMethod,
       };
 
+      // COD
       if (paymentMethod === "cod") {
         const response = await axios.post(
           backendUrl + "/api/order/place",
@@ -102,13 +108,31 @@ const PlaceOrder = () => {
           navigate("/orders");
         } else {
           toast.error(response.data.message);
+          setLoading(false);
         }
-      } else {
-        toast.error("Payment method not supported yet");
       }
+
+      //STRIPE
+      if (paymentMethod === "stripe") {
+        const responseStripe = await axios.post(
+          backendUrl + "/api/order/stripe",
+          orderData,
+          { headers: { token } }
+        );
+
+        if (responseStripe.data.success) {
+          window.location.replace(responseStripe.data.session_url);
+          return; // 🔥 stop execution
+        } else {
+          toast.error(responseStripe.data.message);
+          setLoading(false);
+        }
+      }
+
     } catch (error) {
       console.log(error);
       toast.error("Order failed");
+      setLoading(false);
     }
   };
 
@@ -167,70 +191,43 @@ const PlaceOrder = () => {
         </div>
 
         <div className="mt-10">
-  <Title text1="PAYMENT" text2="METHOD" />
+          <Title text1="PAYMENT" text2="METHOD" />
 
-  <div className="flex flex-col gap-3 mt-4">
+          <div className="flex flex-col gap-3 mt-4">
 
-    {/* STRIPE */}
-    <div
-      onClick={() => setPaymentMethod("stripe")}
-      className={`flex items-center gap-3 border p-3 cursor-pointer rounded
-        ${paymentMethod === "stripe" ? "border-black bg-green-50" : ""}`}
-    >
-      <span
-        className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center
-          ${paymentMethod === "stripe" ? "border-green-600" : "border-gray-400"}`}
-      >
-        {paymentMethod === "stripe" && (
-          <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-        )}
-      </span>
-      <img src={assets.stripe_logo} alt="Stripe" className="h-5" />
-    </div>
+            {/* STRIPE */}
+            <div
+              onClick={() => !loading && setPaymentMethod("stripe")}
+              className={`flex items-center gap-3 border p-3 cursor-pointer rounded
+                ${paymentMethod === "stripe" ? "border-black bg-green-50" : ""}
+                ${loading ? "opacity-50 pointer-events-none" : ""}`}
+            >
+              <img src={assets.stripe_logo} alt="Stripe" className="h-5" />
+            </div>
 
-    {/* RAZORPAY */}
-    <div
-      onClick={() => setPaymentMethod("razorpay")}
-      className={`flex items-center gap-3 border p-3 cursor-pointer rounded
-        ${paymentMethod === "razorpay" ? "border-black bg-green-50" : ""}`}
-    >
-      <span
-        className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center
-          ${paymentMethod === "razorpay" ? "border-green-600" : "border-gray-400"}`}
-      >
-        {paymentMethod === "razorpay" && (
-          <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-        )}
-      </span>
-      <img src={assets.razorpay_logo} alt="Razorpay" className="h-5" />
-    </div>
+            {/* COD */}
+            <div
+              onClick={() => !loading && setPaymentMethod("cod")}
+              className={`flex items-center gap-3 border p-3 cursor-pointer rounded
+                ${paymentMethod === "cod" ? "border-black bg-green-50" : ""}
+                ${loading ? "opacity-50 pointer-events-none" : ""}`}
+            >
+              <span className="text-sm font-medium">Cash on Delivery</span>
+            </div>
+          </div>
 
-    {/* CASH ON DELIVERY */}
-    <div
-      onClick={() => setPaymentMethod("cod")}
-      className={`flex items-center gap-3 border p-3 cursor-pointer rounded
-        ${paymentMethod === "cod" ? "border-black bg-green-50" : ""}`}
-    >
-      <span
-        className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center
-          ${paymentMethod === "cod" ? "border-green-600" : "border-gray-400"}`}
-      >
-        {paymentMethod === "cod" && (
-          <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-        )}
-      </span>
-      <span className="text-sm font-medium">Cash on Delivery</span>
-    </div>
-  </div>
-
-  <button
-    type="submit"
-    className="w-full mt-6 bg-black text-white py-3 text-sm hover:bg-gray-800 transition"
-  >
-    PLACE ORDER
-  </button>
-</div>
-
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full mt-6 py-3 text-sm transition
+              ${loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-800"
+              }`}
+          >
+            {loading ? "PROCESSING..." : "PLACE ORDER"}
+          </button>
+        </div>
       </div>
     </form>
   );

@@ -15,6 +15,8 @@ import SearchBar from './components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify';
 import OurPolicy from './components/OurPolicy'
 import ScrollToTop from "./components/ScrollToTop";
+import Verify from './pages/Verify'
+import Profile from './pages/Profile'
 
 
 const App = () => {
@@ -37,6 +39,8 @@ const App = () => {
         <Route path="/register" element={<Login />} />
         <Route path='/orders' element={<Orders/>}/>
         <Route path='/place-order' element={<PlaceOrder/>}/>
+        <Route path='/verify' element={<Verify/>}/>
+        <Route path='/profile' element={<Profile/>}/>
       </Routes>
       <Footer/>
     </div>
